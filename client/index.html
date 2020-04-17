@@ -1,0 +1,38 @@
+<head>
+</head>
+<body>
+  <h1>
+    Stupid Hi
+  </h1>
+ 
+  <script src="/socket.io/socket.io.js">
+  </script>
+  <script>
+    var socket = io();
+    
+    name = prompt("What is your name?");
+    if(name == null || name == "") {
+      name = "nameless";
+    };
+    
+    var happy = function () {
+      socket.emit("test", {
+        message: name + " | " + document.getElementById("chat").value
+      });
+      const messageElement = document.createElement('div');
+      messageElement.innerText = name + "|" + document.getElementById("chat").value;
+      document.getElementById('hi').prepend(messageElement);
+      document.getElementById("chat").value = "";
+    };
+    
+    socket.on("chatRecieve", function(data) {
+       const messageElement = document.createElement('div');
+       messageElement.innerText = data.message;
+       document.getElementById('hi').prepend(messageElement);
+    });
+  </script>
+  <input type="text" id="chat"><br><br>
+  <button onclick="happy()">Send</button>
+  <div id="hi">
+  </div>
+</body>
