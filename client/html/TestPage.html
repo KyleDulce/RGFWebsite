@@ -45,6 +45,7 @@
 		};
 		
 		var openSettings = function() {
+			document.getElementById("name-change").value = name;
 			hideElement("input-area");
 			showElement("setting-area");
 		};
@@ -53,17 +54,26 @@
 			showElement("input-area");
 			hideElement("setting-area");
 		};
+		
+		var saveSettings = function() {
+			name = document.getElementById("name-change").value;
+			closeSettings();
+		};
 	
 		var socket = io();
     
-		name = prompt("What is your name?");
+		var name = prompt("What is your name?");
 		if(name == null || name == "") {
 			name = "nameless";
 		};
     
+		var c = "black"
+	
 		var send_message = function () {
 			socket.emit("chatSend", {
-				message: name + " | " + document.getElementById("Chat-in").value
+				message: document.getElementById("Chat-in").value
+				name: name
+				color: c;
 			});
 			
 			const messageElement = document.createElement('div');
@@ -74,7 +84,7 @@
     
 		socket.on("chatRecieve", function(data) {
 			const messageElement = document.createElement('div');
-			messageElement.innerText = data.message;
+			messageElement.innerText = data.name + "|" + data.message;
 			document.getElementById('chat-out').append(messageElement);
 		});
 		
@@ -109,7 +119,7 @@
 							<button onclick="closeSettings()", style="float:right">Cancel</button>
 						</td>
 						<td>
-							<button onclick="closeSettings()", style="float:right">Confirm</button>
+							<button onclick="saveSettings()", style="float:right">Confirm</button>
 						</td>
 					</tr>
 				</table>
