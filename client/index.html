@@ -16,7 +16,7 @@
     };
     
     var happy = function () {
-      socket.emit("test", {
+      socket.emit("chatSend", {
         message: name + " | " + document.getElementById("chat").value
       });
       const messageElement = document.createElement('div');

@@ -1,0 +1,119 @@
+<head>
+	<style>
+		#Chatbox {
+			float: right; 
+			width: 20%; 
+			max-width: 20%; 
+			height: 100%; 
+			max-height: 100%; 
+			margin-right: 20; 
+			background-color: yellow; 
+			word-break: break-all;
+		}
+		
+		#chat-out {
+			height:75%; 
+			max-height:75%;
+			overflow-y: auto; 
+			overflow-x: hidden; 
+		}
+		
+		.chat_bottom {
+			height:25%; 
+			max-height:25%; 
+			background-color: blue;
+		}
+		
+		#Chat-in {
+			height:75%; 
+			max-height:75%; 
+			width:100%;
+			max-width:100%;
+			font-size:16;
+		}
+		
+	</style>
+	<script src="/socket.io/socket.io.js"></script>
+	<script>
+	
+		var showElement = function(id) {
+			document.getElementById(id).style.display = "block";
+		};
+		
+		var hideElement = function(id) {
+			document.getElementById(id).style.display = "none";
+		};
+		
+		var openSettings = function() {
+			hideElement("input-area");
+			showElement("setting-area");
+		};
+		
+		var closeSettings = function() {
+			showElement("input-area");
+			hideElement("setting-area");
+		};
+	
+		var socket = io();
+    
+		name = prompt("What is your name?");
+		if(name == null || name == "") {
+			name = "nameless";
+		};
+    
+		var send_message = function () {
+			socket.emit("chatSend", {
+				message: name + " | " + document.getElementById("Chat-in").value
+			});
+			
+			const messageElement = document.createElement('div');
+			messageElement.innerText = name + "|" + document.getElementById("Chat-in").value;
+			document.getElementById('chat-out').append(messageElement);
+			document.getElementById("Chat-in").value = "";
+		};
+    
+		socket.on("chatRecieve", function(data) {
+			const messageElement = document.createElement('div');
+			messageElement.innerText = data.message;
+			document.getElementById('chat-out').append(messageElement);
+		});
+		
+	</script>
+</head>
+<body>
+	<div style="width:100%; overflow:hidden">
+		<div id="wrapper", style="float:left;">
+			
+		</div>
+		<div id="Chatbox"> 
+			<div id="chat-out"></div>
+			<div id="input-area", class="chat_bottom">
+				<input type="text", id="Chat-in"></input>
+				<div id="input-wrapper-footer">
+					<button onclick="send_message()", style="float:right">Send</button>
+					<button onclick="openSettings()", style="float:right">Options</button>
+				</div>
+			</div>
+			<div id="setting-area", class="chat_bottom", style="display:none"> 
+				<table>
+					<tr>
+						<td>
+							Name:
+						</td>
+						<td>
+							<input type="text", id="name-change"></input>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<button onclick="closeSettings()", style="float:right">Cancel</button>
+						</td>
+						<td>
+							<button onclick="closeSettings()", style="float:right">Confirm</button>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+</body>
