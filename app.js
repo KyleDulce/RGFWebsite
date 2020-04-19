@@ -33,7 +33,4 @@ io.sockets.on('connection', function(socket){
     });
   });
   
-  //socket.emit('getS', {
-  //  message: "It works"
-  //}); 
 });

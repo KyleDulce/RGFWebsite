@@ -59,15 +59,27 @@
 			name = document.getElementById("name-change").value;
 			closeSettings();
 		};
+		
+		var createMessageText = function(name, color, message) {
+			const messageElement = document.createElement('div');
+			const nameElement = document.createElement('span');
+			nameElement.innerText = name;
+			nameElement.style.color = color;
+			const messagePostElement = document.createElement('span');
+			messagePostElement.innerText = " | " + message;
+			messageElement.append(nameElement);
+			messageElement.append(messagePostElement);
+			return messageElement;
+		};
 	
 		var socket = io();
     
-		name = prompt("What is your name?");
+		var name = prompt("What is your name?");
 		if(name == null || name == "") {
 			name = "nameless";
 		};
     
-		var c = "black";
+		var c = "red";
 	
 		var send_message = function () {
 			socket.emit("chatSend", {
@@ -77,16 +89,18 @@
 				color: c
 			});
 			
-			const messageElement = document.createElement('div');
-			messageElement.innerText = name + "|" + document.getElementById("Chat-in").value;
-			document.getElementById('chat-out').append(messageElement);
+			//const messageElement = document.createElement('div');
+			//messageElement.innerText = name + "|" + document.getElementById("Chat-in").value;
+			//document.getElementById('chat-out').append(messageElement);
+			document.getElementById('chat-out').append(createMessageText(name, c, document.getElementById("Chat-in").value));
 			document.getElementById("Chat-in").value = "";
 		};
     
 		socket.on("chatRecieve", function (data) {
-			const messageElement = document.createElement('div');
-			messageElement.innerText = data.name + "|" + data.message;
-			document.getElementById('chat-out').append(messageElement);
+			//const messageElement = document.createElement('div');
+			//messageElement.innerText = data.name + "|" + data.message;
+			//document.getElementById('chat-out').append(messageElement);
+			document.getElementById('chat-out').append(createMessageText(data.name, data.color, data.message));
 		});
 		
 	</script>
@@ -108,12 +122,22 @@
 			<div id="setting-area", class="chat_bottom", style="display:none"> 
 				<table>
 					<tr>
-						<td>
-							Name:
-						</td>
-						<td>
-							<input type="text", id="name-change"></input>
-						</td>
+						<td>Name: </td>
+						<td><input type="text", id="name-change"></input></td>
+					</tr>
+					<tr>
+						<td>Color: </td>
+						<td><select id="colors">
+							<option value="black">Black</option>
+							<option value="red">Red</option>
+							<option value="aqua">Aqua</option>
+							<option value="blue">Blue</option>
+							<option value="purple">Purple</option>
+							<option value="gray">Gray</option>
+							<option value="orange">Orange</option>
+							<option value="green">Green</option>
+							<option value="magenta">Pink</option>
+						</select></td>
 					</tr>
 					<tr>
 						<td>
