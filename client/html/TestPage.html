@@ -36,44 +36,45 @@
 	<script src="/socket.io/socket.io.js"></script>
 	<script>
 	
-		var showElement = function(id) {
-			document.getElementById(id).style.display = "block";
+		var showElement = function (id) {
+			document.getElementById (id).style.display = "block";
 		};
 		
-		var hideElement = function(id) {
+		var hideElement = function (id) {
 			document.getElementById(id).style.display = "none";
 		};
 		
-		var openSettings = function() {
+		var openSettings = function () {
 			document.getElementById("name-change").value = name;
 			hideElement("input-area");
 			showElement("setting-area");
 		};
 		
-		var closeSettings = function() {
+		var closeSettings = function () {
 			showElement("input-area");
 			hideElement("setting-area");
 		};
 		
-		var saveSettings = function() {
+		var saveSettings = function () {
 			name = document.getElementById("name-change").value;
 			closeSettings();
 		};
 	
 		var socket = io();
     
-		var name = prompt("What is your name?");
+		name = prompt("What is your name?");
 		if(name == null || name == "") {
 			name = "nameless";
 		};
     
-		var c = "black"
+		var c = "black";
 	
 		var send_message = function () {
 			socket.emit("chatSend", {
-				message: document.getElementById("Chat-in").value
-				name: name
-				color: c;
+				//message: name + " | " + document.getElementById("chat").value
+				message: document.getElementById("Chat-in").value,
+				name: name,
+				color: c
 			});
 			
 			const messageElement = document.createElement('div');
@@ -82,7 +83,7 @@
 			document.getElementById("Chat-in").value = "";
 		};
     
-		socket.on("chatRecieve", function(data) {
+		socket.on("chatRecieve", function (data) {
 			const messageElement = document.createElement('div');
 			messageElement.innerText = data.name + "|" + data.message;
 			document.getElementById('chat-out').append(messageElement);
