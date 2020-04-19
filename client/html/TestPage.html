@@ -57,6 +57,8 @@
 		
 		var saveSettings = function () {
 			name = document.getElementById("name-change").value;
+			var cs = document.getElementById("colors");
+			c = cs.options[cs.selectedIndex].value;
 			closeSettings();
 		};
 		
@@ -79,7 +81,7 @@
 			name = "nameless";
 		};
     
-		var c = "red";
+		var c = "black";
 	
 		var send_message = function () {
 			socket.emit("chatSend", {
