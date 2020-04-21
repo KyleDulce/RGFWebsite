@@ -1,3 +1,4 @@
+<html>
 <head>
 	<style>
 		#Chatbox {
@@ -84,9 +85,16 @@
 		var c = "black";
 	
 		var send_message = function () {
+		
+			var msgRaw = document.getElementById("Chat-in").value
+			
+			if(msgRaw.replace(/\s/g, '') === '') {
+				return;
+			}
+		
 			socket.emit("chatSend", {
 				//message: name + " | " + document.getElementById("chat").value
-				message: document.getElementById("Chat-in").value,
+				message: msgRaw,
 				name: name,
 				color: c
 			});
@@ -94,7 +102,7 @@
 			//const messageElement = document.createElement('div');
 			//messageElement.innerText = name + "|" + document.getElementById("Chat-in").value;
 			//document.getElementById('chat-out').append(messageElement);
-			document.getElementById('chat-out').append(createMessageText(name, c, document.getElementById("Chat-in").value));
+			document.getElementById('chat-out').append(createMessageText(name, c, msgRaw));
 			document.getElementById("Chat-in").value = "";
 		};
     
@@ -104,6 +112,12 @@
 			//document.getElementById('chat-out').append(messageElement);
 			document.getElementById('chat-out').append(createMessageText(data.name, data.color, data.message));
 		});
+		
+		//document.onkeydown = function(event) {
+		//	if(event.keyCode === 13) {
+		//		send_message();
+		//	}
+		//};
 		
 	</script>
 </head>
@@ -115,7 +129,7 @@
 		<div id="Chatbox"> 
 			<div id="chat-out"></div>
 			<div id="input-area", class="chat_bottom">
-				<input type="text", id="Chat-in"></input>
+				<input type="text", id="Chat-in", onkeydown="if (event.keyCode == 13) {send_message();}"></input>
 				<div id="input-wrapper-footer">
 					<button onclick="send_message()", style="float:right">Send</button>
 					<button onclick="openSettings()", style="float:right">Options</button>
@@ -154,3 +168,4 @@
 		</div>
 	</div>
 </body>
+</html>
