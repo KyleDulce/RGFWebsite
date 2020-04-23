@@ -19,18 +19,16 @@ app.use('/client',express.static(__dirname + '/client'));
 
 serv.listen(port);
 
-console.log('Server Started')
+console.log('Server Started');
 
-var io = require('socket.io')(serv,{});
+//var io = require('socket.io')(serv,{});
 
-io.sockets.on('connection', function(socket){
-  console.log('socket connection');
+//io.sockets.on('connection', function(socket){
+//  console.log('socket connection');
   
-  socket.on('chatSend', function(data) {
-    console.log(data.message);
-    socket.broadcast.emit('chatRecieve', {
-      message: data.message
-    });
-  });
+//  socket.on('chatSend', function(data) {
+//    console.log(data.message);
+ //   socket.broadcast.emit('chatRecieve', data);
+//  });
   
-});
+//});
